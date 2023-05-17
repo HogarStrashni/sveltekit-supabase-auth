@@ -1,7 +1,8 @@
 import { SupabaseClient, Session } from '@supabase/supabase-js';
+import { IUniqueStudent } from './lib/types';
 
 declare global {
-	namespace App {
+	declare namespace App {
 		// interface Error {}
 		interface Locals {
 			supabase: SupabaseClient;
@@ -9,6 +10,8 @@ declare global {
 		}
 		interface PageData {
 			session: Session | null;
+			supabase: SupabaseClient;
+			allStudents: Array<IUniqueStudent>;
 		}
 		// interface Platform {}
 	}

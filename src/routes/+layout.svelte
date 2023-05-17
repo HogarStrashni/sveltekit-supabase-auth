@@ -1,10 +1,9 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
-	import type { LayoutData } from './$types';
 	import { invalidate } from '$app/navigation';
 
-	export let data: LayoutData;
+	export let data;
 
 	$: ({ supabase, session } = data);
 
