@@ -1,5 +1,5 @@
 import { SupabaseClient, Session } from '@supabase/supabase-js';
-import { IUniqueStudent } from './lib/types';
+import { IUniqueStudent, ISubjectGrade } from './lib/types';
 
 declare global {
 	declare namespace App {
@@ -12,6 +12,7 @@ declare global {
 			session: Session | null;
 			supabase: SupabaseClient;
 			allStudents: Array<IUniqueStudent>;
+			studentGrades: Array<ISubjectGrade>;
 		}
 		// interface Platform {}
 	}

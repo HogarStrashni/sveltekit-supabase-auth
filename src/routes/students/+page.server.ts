@@ -4,10 +4,10 @@ import { error } from '@sveltejs/kit';
 export const load = async ({ parent, locals: { supabase } }) => {
 	await parent();
 
-	const { data } = await supabase.from('students').select();
+	const { data, error: err } = await supabase.from('students').select();
 
-	if (!data) {
-		return error(500, { message: 'Something went wrong!' });
+	if (err) {
+		throw error(500, { message: 'Something went wrong!' });
 	}
 
 	return {

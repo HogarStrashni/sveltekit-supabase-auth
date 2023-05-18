@@ -1,26 +1,39 @@
+import type { ISubjectGrade } from '$lib/types.js';
 import { error } from '@sveltejs/kit';
 
 export const load = async ({ locals: { supabase }, parent, params }) => {
 	await parent();
 
-	const { data } = await supabase
-		.from('grades')
+	const { data, error: err } = await supabase
+		.from('subjects')
 		.select(
 			`
-        grade,
-        date_exam,
-        subjects (
-          subject
-        )
-      `
+        *,
+				grades(
+					grade,
+					date_exam
+				)
+				
+			`
 		)
-		.eq('student_id', params.studentId);
+		.eq('grades.student_id', params.studentId)
+		.order('subject_id', { ascending: true });
 
-	if (!data) {
-		throw error(500, 'No data');
+	if (err) {
+		throw error(500, { message: 'Something went wrong!' });
 	}
 
+	const studentGrades = data.map((item) => {
+		const { subject_id, subject, grades } = item;
+		return {
+			subject_id,
+			subject,
+			grade: grades.length ? grades[0].grade : null,
+			date_exam: grades.length ? grades[0].date_exam : null
+		};
+	});
+
 	return {
-		uniqueStudent: data
+		studentGrades: studentGrades as Array<ISubjectGrade>
 	};
 };
